@@ -2,7 +2,6 @@ package senac.java.Domain;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Users {
@@ -51,7 +50,7 @@ public class Users {
         return email;
     }
 
-    public void setEmail() {
+    public void setEmail(String email) {
         this.email = email;
     }
 

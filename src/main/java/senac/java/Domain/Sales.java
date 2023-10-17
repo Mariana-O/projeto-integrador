@@ -3,6 +3,8 @@ package senac.java.Domain;
 import org.json.JSONObject;
 
 import java.sql.Date;
+import java.util.List;
+
 
 public class Sales {
     int id = 0;
@@ -58,6 +60,10 @@ public class Sales {
         this.finishedSale = finishedSale;
     }
 
+    public double getDiscount(){return discount;}
+
+    public void setDiscount(double discount){this.discount = discount;}
+
     public String getSale() {
         return sale;
     }
@@ -78,7 +84,19 @@ public class Sales {
 
         return json;
     }
-}
+
+    public static Sales getSales(int index, List<Sales> salesList) {
+        if (index >= 0 && index < salesList.size()) {
+            return salesList.get(index);
+        }else {
+            return null;
+        }
+    }
+
+        public static List<Sales> getAllSales(List<Sales> salesList) {return salesList;}
+    }
+
+
 
 
 

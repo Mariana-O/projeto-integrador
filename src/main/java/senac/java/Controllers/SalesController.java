@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import senac.java.Domain.Sales;
 
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -22,8 +23,29 @@ public class SalesController {
             String response = "";
 
             if ("GET".equals((exchange.getRequestMethod()))) {
-//                response = "Essa é a rota venda - GET";
-                res.enviarResponse(exchange, response, 200);
+             List<Sales> getAllFromArray = Sales.getAllSales(saleslist);
+
+
+             if(!getAllFromArray.isEmpty()) {
+                 for (Sales sales : getAllFromArray) {
+                     System.out.println("Usuário: " + sales.getUser());
+                     System.out.println("Produto: " + sales.getProducts());
+                     System.out.println("Preço: " + sales.getValor());
+                     System.out.println("Valor final: " + sales.getFinishedSale());
+                     System.out.println("Desconto: " + sales.getDiscount());
+                     System.out.println("Vendas : " + sales.getSale());
+                     System.out.println();
+                     System.out.println("*-------------------------------------*");
+                     System.out.println();
+
+                 }
+                 String resposta = "Dados enviados com sucesso";
+                 res.enviarResponse(exchange, resposta, 200);
+             }else {
+                 String resposta = "Dados não foram enviados";
+                 res.enviarResponse(exchange, resposta, 400);
+
+             }
             } else if ("POST".equals(exchange.getRequestMethod())) {
                 try (InputStream requestBody = exchange.getRequestBody()) {
                     JSONObject json = new JSONObject(new String(requestBody.readAllBytes()));
@@ -39,7 +61,8 @@ public class SalesController {
                     );
                     saleslist.add(sales);
 
-                    System.out.println("SalesList contem: " + sales.toJson());
+                   res.enviarResponseJson(exchange, sales.toJson(), 400);
+                   System.out.println("SalesList contem: " + sales.toJson());
 
                 } catch(Exception e){
                     String resposta = e.toString();

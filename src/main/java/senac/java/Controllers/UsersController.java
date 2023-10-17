@@ -34,6 +34,10 @@ public class UsersController {
                         System.out.println();
                         System.out.println("*-------------------------------------*");
                         System.out.println();}
+
+                   String  resposta = "Dados encontrados com sucesso";
+                    res.enviarResponse(exchange, resposta, 200);
+
                 } else {
                     System.out.println("Nenhum usuario foi encontrado");
                 }
@@ -68,7 +72,7 @@ public class UsersController {
                     System.out.println("UserList contem: " + user.toJson());
 
                     String resposta = "POST:" + user.toJson();
-                    res.enviarResponseJson(exchange, user.toJson());
+                    res.enviarResponseJson(exchange, user.toJson(), 400);
 
                 } catch (Exception e) {
                     String resposta = e.toString();

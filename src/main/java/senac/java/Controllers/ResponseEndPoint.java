@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class ResponseEndPoint {
-    public static void enviarResponseJson(HttpExchange exchange, JSONObject response)
+    public static void enviarResponseJson(HttpExchange exchange, JSONObject response, Integer statusCode)
             throws IOException {
         exchange.getResponseHeaders().set("Content-Type", "application/json");
 
         byte[] responseBytes = response.toString().getBytes("UTF-8");
 
-        exchange.sendResponseHeaders(200, responseBytes.length);
+        exchange.sendResponseHeaders(statusCode, responseBytes.length);
 
         OutputStream os = exchange.getResponseBody();
         os.write(responseBytes);
@@ -21,7 +21,7 @@ public class ResponseEndPoint {
     }
 
     public static void enviarResponse(HttpExchange exchange, String response, Integer statusCode)throws IOException {
-        exchange.sendResponseHeaders(200, response.getBytes().length);
+        exchange.sendResponseHeaders(statusCode, response.getBytes().length);
         OutputStream os = exchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
