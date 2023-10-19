@@ -26,8 +26,9 @@ public class Users {
         return name;
     }
 
-    public void setName(String name) {
+    public String setName(String name) {
         this.name = name;
+        return name;
     }
 
     public String getLastName() {
@@ -62,18 +63,47 @@ public class Users {
         json.put("cpf", cpf);
         json.put("email", email);
 
+
+
         return json;
     }
 
-    public static Users getUser(int index, List<Users> usersList) {
-  if (index >= 0 && index < usersList.size()) {
-            return usersList.get(index);
+
+    public JSONObject arrayToJson(List<Users> arrayUserList) {
+        JSONObject json = new JSONObject();
+
+        if (!arrayUserList.isEmpty()) {
+
+           int keyjson = 0;
+            for (Users users : arrayUserList) {
+                JSONObject jsonUser = new JSONObject();
+
+                jsonUser.put("name", name = users.getName());
+                jsonUser.put("last_name", lastName = users.getLastName());
+                jsonUser.put("cpf", cpf = users.getCpf());
+                jsonUser.put("email", email = users.getEmail());
+
+                keyjson++;
+                json.put(String.valueOf(keyjson), jsonUser);
+
+            }
+
+
+            return json;
         } else {
             return null;
         }
     }
 
-    public static List<Users> getAllUsers(List<Users> usersList){
-        return usersList;
+        public static Users getUser ( int index, List<Users > usersList){
+            if (index >= 0 && index < usersList.size()) {
+                return usersList.get(index);
+            } else {
+                return null;
+            }
+        }
+
+        public static List<Users> getAllUsers (List < Users > usersList) {
+            return usersList;
+        }
     }
-}

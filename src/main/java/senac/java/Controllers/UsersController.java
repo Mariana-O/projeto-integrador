@@ -25,6 +25,8 @@ public class UsersController {
             if ("GET".equals((exchange.getRequestMethod()))) {
                 List<Users> getAllFromArray = Users.getAllUsers(userlist); // INSTANCIA
 
+                Users user = new Users();
+
                 if (!getAllFromArray.isEmpty()) {
                     for (Users users : getAllFromArray) {
                         System.out.println("Name: " + users.getName());
@@ -36,10 +38,11 @@ public class UsersController {
                         System.out.println();}
 
                    String  resposta = "Dados encontrados com sucesso";
-                    res.enviarResponse(exchange, resposta, 200);
+                    res.enviarResponseJson(exchange, user.arrayToJson(getAllFromArray),  200);
 
                 } else {
-                    System.out.println("Nenhum usuario foi encontrado");
+                    String  resposta = "Dados não encontrados";
+                    res.enviarResponse(exchange, resposta, 200);
                 }
 ////                }
 ////                 Users getFromArray = Users.getUser(0, userlist); //INSTANCIA
