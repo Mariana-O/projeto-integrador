@@ -83,8 +83,8 @@ public class Users {
                 jsonUser.put("cpf", cpf = users.getCpf());
                 jsonUser.put("email", email = users.getEmail());
 
-                keyjson++;
                 json.put(String.valueOf(keyjson), jsonUser);
+                keyjson++;
 
             }
 

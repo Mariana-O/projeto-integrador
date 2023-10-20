@@ -44,21 +44,6 @@ public class UsersController {
                     String  resposta = "Dados não encontrados";
                     res.enviarResponse(exchange, resposta, 200);
                 }
-////                }
-////                 Users getFromArray = Users.getUser(0, userlist); //INSTANCIA
-////                 System.out.println("os dados encontrados foram: " + getFromArray);
-////
-////                 if(getFromArray != null){
-////                     System.out.println("Name: " + getFromArray.getName());
-////                     System.out.println("Last Name: " + getFromArray.getLastName());
-//                     System.out.println("Cpf: " + getFromArray.getCpf());
-//                    System.out.println("Email: " + getFromArray.getEmail());
-//                }else{
-//                    System.out.println("Usuario não encontrado");
-//                 }
-//
-//                 String resposta = "GET: " + getFromArray;
-//                res.enviarResponse(exchange, resposta, 201);
 
             } else if ("POST".equals(exchange.getRequestMethod())) {
                 try (InputStream requestBody = exchange.getRequestBody()) {
@@ -75,11 +60,11 @@ public class UsersController {
                     System.out.println("UserList contem: " + user.toJson());
 
                     String resposta = "POST:" + user.toJson();
-                    res.enviarResponseJson(exchange, user.toJson(), 400);
+                    res.enviarResponseJson(exchange, user.toJson(), 200);
 
                 } catch (Exception e) {
                     String resposta = e.toString();
-                    res.enviarResponse(exchange, resposta, 201);
+                    res.enviarResponse(exchange, resposta, 200);
                     System.out.println("O erro foi: " + e);
                 }
             } else if ("PUT".equals(exchange.getRequestMethod())) {

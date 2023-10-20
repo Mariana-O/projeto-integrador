@@ -47,5 +47,6 @@ public class Server{
         Headers headers = exchange.getResponseHeaders();
         headers.set("Access-Control-Allow-Origin", "*");
         headers.set("Access-Control-Allow-Methods", "GET, OPTIONS, POST, PUT, DELETE");
+        headers.set("Access-Control-Allow-Headers", "Content-Type");
     }
 }

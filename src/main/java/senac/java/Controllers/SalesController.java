@@ -20,7 +20,7 @@ public class SalesController {
     public static class SalesHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
-            String response = "";
+            String response = "cheguei no exception";
 
             if ("GET".equals((exchange.getRequestMethod()))) {
              List<Sales> getAllFromArray = Sales.getAllSales(saleslist);
@@ -66,6 +66,8 @@ public class SalesController {
 
                 } catch(Exception e){
                     String resposta = e.toString();
+                    System.out.println(response);
+                    System.out.println("----------------------");
                     res.enviarResponse(exchange, resposta, 201);
                     System.out.println("O erro foi: " + e);}
             } else if ("PUT".equals(exchange.getRequestMethod())) {
