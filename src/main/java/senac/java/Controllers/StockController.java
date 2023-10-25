@@ -24,22 +24,36 @@ public class StockController {
 
             if ("GET".equals((exchange.getRequestMethod()))) {
                 List<Stock> getAllFromArray = Stock.getAllStocks(stocklist);
-                response = "Essa é a rota de estoque - GET";
 
-                res.enviarResponse(exchange, response, 200);
+                Stock stocks = new Stock();
+                if (!getAllFromArray.isEmpty()) {
+                    for (Stock stock : getAllFromArray) {
+                        System.out.println("Name: " + stock.getName());
+                        System.out.println("Factory: " + stock.getFactory());
+                        System.out.println("Quantity: " + stock.getQuantity());
+                        System.out.println();
+                        System.out.println("*-------------------------------------*");
+                        System.out.println();
+                    }
+                    response = "Essa é a rota de estoque - GET";
+                    res.enviarResponse(exchange, response, 200);
+                }else{
+                    String  resposta = "Dados não encontrados";
+                    res.enviarResponse(exchange, resposta, 200);
+                }
             } else if ("POST".equals(exchange.getRequestMethod())) {
                 try (InputStream requestBody = exchange.getRequestBody()) {
                     JSONObject json = new JSONObject(new String(requestBody.readAllBytes()));
 
-                   Stock stock = new Stock(
+                   Stock stocks = new Stock(
                             json.getString("name"),
                             json.getString("factory"),
                             json.getInt("quantity")
                     );
-                    stocklist.add(0, stock);
+                    stocklist.add(0, stocks);
 
-                    System.out.println("StockList contem: " + stock.toJson());
-                    res.enviarResponseJson(exchange, stock.toJson(), 200);
+                    System.out.println("StockList contem: " + stocks.toJson());
+                    res.enviarResponseJson(exchange, stocks.toJson(), 200);
 
                 } catch(Exception e){
                     String resposta = e.toString();
