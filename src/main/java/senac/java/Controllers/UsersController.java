@@ -73,6 +73,10 @@ public class UsersController {
             } else if ("DELETE".equals(exchange.getRequestMethod())) {
                 response = "Essa é a rota usuario - DELETE";
                 res.enviarResponse(exchange, response, 200);
+            }else if ("OPTIONS".equals(exchange.getRequestMethod())){
+                    exchange.sendResponseHeaders(204, -1);
+                    exchange.close();
+                    return;
             } else {
                 response = "Essa é a rota de usuario - método não disponivel" +
                         "O método utilizado foi: " + exchange.getRequestMethod();

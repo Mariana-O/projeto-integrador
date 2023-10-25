@@ -45,8 +45,13 @@ public class Server{
 
     private void configureCorsHeaders(HttpExchange exchange){
         Headers headers = exchange.getResponseHeaders();
-        headers.set("Access-Control-Allow-Origin", "*");
+        String requestOrigin = exchange.getRequestHeaders().getFirst("Origin");
+        if(requestOrigin != null){
+            headers.set("Acess-Control-Allow-Origin", requestOrigin);
+        }
         headers.set("Access-Control-Allow-Methods", "GET, OPTIONS, POST, PUT, DELETE");
-        headers.set("Access-Control-Allow-Headers", "Content-Type");
+        headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        headers.set("Access-Control-Allow-Credentials", "True");
+        headers.set("Acess-Control-Max-Age", "3600");
     }
 }

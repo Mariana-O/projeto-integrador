@@ -76,6 +76,10 @@ public class SalesController {
             } else if ("DELETE".equals(exchange.getRequestMethod())) {
                 response = "Essa é a rota venda - DELETE";
                 res.enviarResponse(exchange, response, 200);
+            }else if ("OPTIONS".equals(exchange.getRequestMethod())){
+                    exchange.sendResponseHeaders(204, -1);
+                    exchange.close();
+                    return;
             } else {
                 response = "Essa é a rota de venda - método não disponivel" +
                         "O método utilizado foi: " + exchange.getRequestMethod();

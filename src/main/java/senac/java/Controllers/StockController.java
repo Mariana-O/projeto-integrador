@@ -23,6 +23,7 @@ public class StockController {
             String response = "";
 
             if ("GET".equals((exchange.getRequestMethod()))) {
+                List<Stock> getAllFromArray = Stock.getAllStocks(stocklist);
                 response = "Essa é a rota de estoque - GET";
 
                 res.enviarResponse(exchange, response, 200);
@@ -35,9 +36,10 @@ public class StockController {
                             json.getString("factory"),
                             json.getInt("quantity")
                     );
-                    stocklist.add(stock);
+                    stocklist.add(0, stock);
 
                     System.out.println("StockList contem: " + stock.toJson());
+                    res.enviarResponseJson(exchange, stock.toJson(), 200);
 
                 } catch(Exception e){
                     String resposta = e.toString();
@@ -50,6 +52,10 @@ public class StockController {
             } else if ("DELETE".equals(exchange.getRequestMethod())) {
                 response = "Essa é a rota de estoque - DELETE";
                 res.enviarResponse(exchange, response, 200);
+            } else if ("OPTIONS".equals(exchange.getRequestMethod())){
+                exchange.sendResponseHeaders(204, -1);
+                exchange.close();
+                return;
             } else {
                 response = "Essa é a rota de estoque - método não disponivel" +
                         "O método utilizado foi: " + exchange.getRequestMethod();
