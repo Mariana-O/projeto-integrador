@@ -35,8 +35,7 @@ public class StockController {
                         System.out.println("*-------------------------------------*");
                         System.out.println();
                     }
-                    response = "Essa é a rota de estoque - GET";
-                    res.enviarResponse(exchange, response, 200);
+                    res.enviarResponseJson(exchange, stocks.arrayToJson(getAllFromArray), 200);
                 }else{
                     String  resposta = "Dados não encontrados";
                     res.enviarResponse(exchange, resposta, 200);
@@ -56,6 +55,7 @@ public class StockController {
                     res.enviarResponseJson(exchange, stocks.toJson(), 200);
 
                 } catch(Exception e){
+
                     String resposta = e.toString();
                     res.enviarResponse(exchange, resposta, 201);
                     System.out.println("O erro foi: " + e);}

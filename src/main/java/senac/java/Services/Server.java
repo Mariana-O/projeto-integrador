@@ -47,7 +47,7 @@ public class Server{
         Headers headers = exchange.getResponseHeaders();
         String requestOrigin = exchange.getRequestHeaders().getFirst("Origin");
         if(requestOrigin != null){
-            headers.set("Acess-Control-Allow-Origin", requestOrigin);
+            headers.set("Access-Control-Allow-Origin", requestOrigin);
         }
         headers.set("Access-Control-Allow-Methods", "GET, OPTIONS, POST, PUT, DELETE");
         headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
