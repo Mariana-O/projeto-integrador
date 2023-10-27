@@ -6,7 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import senac.java.Controllers.SalesController;
-import senac.java.Controllers.StockController;
+import senac.java.Controllers.ProductsController;
 import senac.java.Controllers.UsersController;
 
 
@@ -19,7 +19,7 @@ public class Server{
         HttpServer server = HttpServer.create(new InetSocketAddress(4000), 0);
 
         HttpHandler userHandler = new UsersController.UsersHandler();
-        HttpHandler stockHandler = new StockController.StockHandler();
+        HttpHandler stockHandler = new ProductsController.ProductsHandler();
         HttpHandler salesHandler = new SalesController.SalesHandler();
 
         server.createContext("/api/user", exchange -> {

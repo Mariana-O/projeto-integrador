@@ -25,7 +25,6 @@ public class SalesController {
             if ("GET".equals((exchange.getRequestMethod()))) {
              List<Sales> getAllFromArray = Sales.getAllSales(saleslist);
 
-
              if(!getAllFromArray.isEmpty()) {
                  for (Sales sales : getAllFromArray) {
                      System.out.println("Usuário: " + sales.getUser());
@@ -33,19 +32,17 @@ public class SalesController {
                      System.out.println("Preço: " + sales.getValor());
                      System.out.println("Valor final: " + sales.getFinishedSale());
                      System.out.println("Desconto: " + sales.getDiscount());
-                     System.out.println("Vendas : " + sales.getSale());
+                     System.out.println("Venda : " + sales.getSale());
                      System.out.println();
                      System.out.println("*-------------------------------------*");
                      System.out.println();
+                     res.enviarResponseJson(exchange, sales.arrayToJson(getAllFromArray), 200);}
 
-                 }
-                 String resposta = "Dados enviados com sucesso";
-                 res.enviarResponse(exchange, resposta, 200);
              }else {
                  String resposta = "Dados não foram enviados";
                  res.enviarResponse(exchange, resposta, 400);
-
              }
+
             } else if ("POST".equals(exchange.getRequestMethod())) {
                 try (InputStream requestBody = exchange.getRequestBody()) {
                     JSONObject json = new JSONObject(new String(requestBody.readAllBytes()));
@@ -54,12 +51,12 @@ public class SalesController {
                            json.getString("user"),
                            json.getString("products"),
                            json.getDouble("value"),
-                           json.getBoolean("finishedsale"),
+                           json.getBoolean("finishedSale"),
                            json.getDouble("discount"),
                            json.getString("sale")
 
                     );
-                    saleslist.add(sales);
+                    saleslist.add(0, sales);
 
                    res.enviarResponseJson(exchange, sales.toJson(), 400);
                    System.out.println("SalesList contem: " + sales.toJson());

@@ -3,39 +3,37 @@ package senac.java.Controllers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.json.JSONObject;
-import senac.java.Domain.Stock;
-import senac.java.Domain.Users;
+import senac.java.Domain.Products;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StockController {
+public class ProductsController {
 
     static ResponseEndPoint res = new ResponseEndPoint();
-    private static List<Stock> stocklist = new ArrayList<>();
+    private static List<Products> productslist = new ArrayList<>();
 
-    public static class StockHandler implements HttpHandler {
+    public static class ProductsHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
 
             String response = "";
 
             if ("GET".equals((exchange.getRequestMethod()))) {
-                List<Stock> getAllFromArray = Stock.getAllStocks(stocklist);
+                List<Products> getAllFromArray = Products.getAllProducts(productslist);
 
-                Stock stocks = new Stock();
                 if (!getAllFromArray.isEmpty()) {
-                    for (Stock stock : getAllFromArray) {
-                        System.out.println("Name: " + stock.getName());
-                        System.out.println("Factory: " + stock.getFactory());
-                        System.out.println("Quantity: " + stock.getQuantity());
+                    for (Products products : getAllFromArray) {
+                        System.out.println("Nome: " + products.getName());
+                        System.out.println("Descricao: " + products.getDescription());
+                        System.out.println("Preco: " + products.getPrice());
                         System.out.println();
                         System.out.println("*-------------------------------------*");
                         System.out.println();
+                        res.enviarResponseJson(exchange, products.arrayToJson(getAllFromArray), 200);
                     }
-                    res.enviarResponseJson(exchange, stocks.arrayToJson(getAllFromArray), 200);
                 }else{
                     String  resposta = "Dados não encontrados";
                     res.enviarResponse(exchange, resposta, 200);
@@ -44,15 +42,15 @@ public class StockController {
                 try (InputStream requestBody = exchange.getRequestBody()) {
                     JSONObject json = new JSONObject(new String(requestBody.readAllBytes()));
 
-                   Stock stocks = new Stock(
+                   Products products = new Products(
                             json.getString("name"),
-                            json.getString("factory"),
-                            json.getInt("quantity")
+                            json.getString("description"),
+                            json.getInt("price")
                     );
-                    stocklist.add(0, stocks);
+                    productslist.add(0, products);
 
-                    System.out.println("StockList contem: " + stocks.toJson());
-                    res.enviarResponseJson(exchange, stocks.toJson(), 200);
+                    System.out.println("StockList contem: " + products.toJson());
+                    res.enviarResponseJson(exchange, products.toJson(), 200);
 
                 } catch(Exception e){
 

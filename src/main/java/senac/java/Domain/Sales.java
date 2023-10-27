@@ -7,7 +7,6 @@ import java.util.List;
 
 
 public class Sales {
-    int id = 0;
     String user = "";
     String products = "";
     double value = 0;
@@ -78,11 +77,37 @@ public class Sales {
         json.put("user", user);
         json.put("products", products);
         json.put("value", value);
-        json.put("finishedsale", finishedSale);
+        json.put("finishedSale", finishedSale);
         json.put("discount", discount);
         json.put("sale", sale);
 
         return json;
+    }
+
+    public JSONObject arrayToJson(List<Sales> arraySalesList) {
+        JSONObject json = new JSONObject();
+
+        if (!arraySalesList.isEmpty()) {
+
+            int keyjson = 0;
+            for (Sales sales : arraySalesList) {
+                JSONObject jsonSales = new JSONObject();
+
+                jsonSales.put("user", user);
+                jsonSales.put("products", products);
+                jsonSales.put("value", value);
+                jsonSales.put("finishedSale", finishedSale);
+                jsonSales.put("discount", discount);
+                jsonSales.put("sale", sale);
+
+                json.put(String.valueOf(keyjson), jsonSales);
+                keyjson++;
+
+            }
+            return json;
+        } else {
+            return null;
+        }
     }
 
     public static Sales getSales(int index, List<Sales> salesList) {
