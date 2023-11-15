@@ -5,11 +5,12 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class Users {
+    ;
     int id = 0;
-    String name = "";
-    String lastName = "";
-    String cpf = "";
-    String email = "";
+    public String name = "";
+    public String lastName = "";
+    public String cpf = "";
+    public String email = "";
 
 
     public Users() {

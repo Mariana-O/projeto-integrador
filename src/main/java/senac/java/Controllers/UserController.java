@@ -1,63 +1,55 @@
 package senac.java.Controllers;
-
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.json.JSONObject;
 import senac.java.DAL.UsersDal;
 import senac.java.Domain.Users;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsersController {
-    public static ResponseEndPoint res = new ResponseEndPoint();
+public class UserController {
+    static ResponseEndPoint res = new ResponseEndPoint();
     public static List<Users> userlist = new ArrayList<>();
 
-    public static class UsersHandler implements HttpHandler {
+    public static class UsersHandle implements HttpHandler {
         Users users = new Users();
-        String response = "";
 
         @Override
         public void handle(HttpExchange exchange) throws IOException {
-//            if(doGet()){
-//            }
-        }
-
-        public void doGet(HttpExchange exchange) throws IOException {
-
-            if("GET".equals((exchange.getRequestMethod()))) {
-                UsersDal userdal = new UsersDal();
-
-                List<Users> getAllFromArray = Users.getAllUsers(userlist);// INSTANCIA
-                if (!getAllFromArray.isEmpty()) {
-                    for (Users users : getAllFromArray) {
-                        System.out.println("Name: " + users.getName());
-                        System.out.println("Last Name: " + users.getLastName());
-                        System.out.println("Cpf: " + users.getCpf());
-                        System.out.println("Email: " + users.getEmail());
-                        System.out.println();
-                        System.out.println("*-------------------------------------*");
-                        System.out.println();
-
-                        res.enviarResponseJson(exchange, users.arrayToJson(getAllFromArray), 200);
-
-                    }
-                }
-                try {
-                    userdal.listarUsuario();
-
-                } catch (Exception e) {
-                    System.out.println("O erro foi: " + e);
-                    String resposta = "Dados não encontrados";
-                    res.enviarResponse(exchange, resposta, 200);
-                }
-            }
-        }
-
-        public void doPost(HttpExchange exchange) throws IOException {
-            if("POST".equals(exchange.getRequestMethod())) {
+            String response = "";
+//
+//            if ("GET".equals((exchange.getRequestMethod()))) {
+//                UsersDal userdal = new UsersDal();
+//
+//                List<Users> getAllFromArray = Users.getAllUsers(userlist); // INSTANCIA
+//
+//                if (!getAllFromArray.isEmpty()) {
+//                    for (Users users : getAllFromArray) {
+//                        System.out.println("Name: " + users.getName());
+//                        System.out.println("Last Name: " + users.getLastName());
+//                        System.out.println("Cpf: " + users.getCpf());
+//                        System.out.println("Email: " + users.getEmail());
+//                        System.out.println();
+//                        System.out.println("*-------------------------------------*");
+//                        System.out.println();
+//
+//                        res.enviarResponseJson(exchange, users.arrayToJson(getAllFromArray), 200);
+//
+//                    }
+//                }
+//                try {
+//                    userdal.listarUsuario();
+//
+//                } catch (Exception e) {
+//                    System.out.println("O erro foi:" + e);
+//                    String resposta = "Dados não encontrados";
+//                    res.enviarResponse(exchange, resposta, 200);
+//                }
+//
+//            } else
+            if ("POST".equals(exchange.getRequestMethod())) {
                 UsersDal userdal = new UsersDal();
 
                 try (InputStream requestBody = exchange.getRequestBody()) {
@@ -73,6 +65,7 @@ public class UsersController {
                     resp = userdal.inserirUsuario(user.name, user.lastName, user.cpf, user.email);
 
                     res.enviarResponseJson(exchange, user.toJson(), 200);
+
                     if (resp == 0) {
                         response = "houve um problema ao criar o usuario";
 
@@ -80,16 +73,13 @@ public class UsersController {
                         response = "usuario criado com sucesso";
                         res.enviarResponse(exchange, String.valueOf(resp), 200);
                     }
+
                 } catch (Exception e) {
                     String resposta = e.toString();
                     res.enviarResponse(exchange, resposta, 200);
                     System.out.println("O erro foi: " + e);
                 }
-            }
-        }
-
-        public void doPut(HttpExchange exchange) throws IOException {
-            if("PUT".equals(exchange.getRequestMethod())) {
+            } else if ("PUT".equals(exchange.getRequestMethod())) {
 
                 UsersDal userdal = new UsersDal();
 
@@ -98,15 +88,11 @@ public class UsersController {
                     userdal.atualizarUsuario(users.name, users.lastName, users.cpf, users.email);
 
                 } catch (Exception e) {
-                    System.out.println("O erro foi: " + e);
+                    System.out.println("O erro foi:" + e);
                 }
 
                 res.enviarResponse(exchange, response, 200);
-            }
-        }
-
-        public void doDelete(HttpExchange exchange) throws IOException {
-            if ("DELETE".equals(exchange.getRequestMethod())) {
+            } else if ("DELETE".equals(exchange.getRequestMethod())) {
                 UsersDal userdal = new UsersDal();
 
                 try {
@@ -114,15 +100,11 @@ public class UsersController {
                     userdal.deletarUsuario();
 
                 } catch (Exception e) {
-                    System.out.println("O erro foi: " + e);
+                    System.out.println("O erro foi:" + e);
                 }
                 res.enviarResponse(exchange, response, 200);
 
-            }
-        }
-
-        public void doOptions(HttpExchange exchange) throws IOException {
-            if ("OPTIONS".equals(exchange.getRequestMethod())) {
+            } else if ("OPTIONS".equals(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1);
                 exchange.close();
                 return;
@@ -134,10 +116,6 @@ public class UsersController {
         }
     }
 }
-
-
-
-
 
 
 
