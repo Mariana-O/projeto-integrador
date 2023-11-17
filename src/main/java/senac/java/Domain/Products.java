@@ -5,11 +5,10 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class Products {
-
-    int id = 0;
-    String name = "";
-    String description = "";
-    int price = 0;
+  public int id = 0;
+  public String name = "";
+  public String description = "";
+  public int price = 0;
 
 
     public Products() {

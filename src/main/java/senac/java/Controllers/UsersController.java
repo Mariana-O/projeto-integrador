@@ -5,7 +5,6 @@ import com.sun.net.httpserver.HttpHandler;
 import org.json.JSONObject;
 import senac.java.DAL.UsersDal;
 import senac.java.Domain.Users;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -16,18 +15,34 @@ public class UsersController {
     public static List<Users> userlist = new ArrayList<>();
 
     public static class UsersHandler implements HttpHandler {
-        Users users = new Users();
-        String response = "";
+        static Users users = new Users();
+        static String response = "";
 
         @Override
         public void handle(HttpExchange exchange) throws IOException {
-//            if(doGet()){
-//            }
-        }
+                try {
+                    if("GET".equals(exchange.getRequestMethod()))
+                    {
+                        doGet(exchange);
+                    }else if("POST".equals(exchange.getRequestMethod()))
+                    {
+                        doPost(exchange);
+                    }else if("PUT".equals(exchange.getRequestMethod()))
+                    {
+                        doPut(exchange);
+                    }else if("DELETE".equals(exchange.getRequestMethod()))
+                    {
+                        doDelete(exchange);
+                    }else if("OPTIONS".equals(exchange.getRequestMethod())) {
+                        doOptions(exchange);}
+                } catch (Exception e) {
+                    e.toString();
+                    System.out.println("O erro foi " + e);
+                }
+            }
 
-        public void doGet(HttpExchange exchange) throws IOException {
-
-            if("GET".equals((exchange.getRequestMethod()))) {
+        public static void doGet(HttpExchange exchange) throws IOException {
+            if ("GET".equals((exchange.getRequestMethod()))) {
                 UsersDal userdal = new UsersDal();
 
                 List<Users> getAllFromArray = Users.getAllUsers(userlist);// INSTANCIA
@@ -46,7 +61,7 @@ public class UsersController {
                     }
                 }
                 try {
-                    userdal.listarUsuario();
+                    userdal.listUser();
 
                 } catch (Exception e) {
                     System.out.println("O erro foi: " + e);
@@ -55,27 +70,24 @@ public class UsersController {
                 }
             }
         }
-
-        public void doPost(HttpExchange exchange) throws IOException {
-            if("POST".equals(exchange.getRequestMethod())) {
+        public static void doPost(HttpExchange exchange) throws IOException {
+            if ("POST".equals(exchange.getRequestMethod())) {
                 UsersDal userdal = new UsersDal();
 
                 try (InputStream requestBody = exchange.getRequestBody()) {
                     JSONObject json = new JSONObject(new String(requestBody.readAllBytes()));
                     int resp = 0;
                     Users user = new Users(
-                            json.getString("name"),
-                            json.getString("last_name"),
-                            json.getString("cpf"),
-                            json.getString("email")
-                    );
-                    userlist.add(0, user);
-                    resp = userdal.inserirUsuario(user.name, user.lastName, user.cpf, user.email);
+                    json.getString("name"),
+                    json.getString("last_name"),
+                    json.getString("cpf"),
+                    json.getString("email"));
+                     userlist.add(0, user);
+                     resp = userdal.insertUser(user.name, user.lastName, user.cpf, user.email);
 
                     res.enviarResponseJson(exchange, user.toJson(), 200);
                     if (resp == 0) {
                         response = "houve um problema ao criar o usuario";
-
                     } else {
                         response = "usuario criado com sucesso";
                         res.enviarResponse(exchange, String.valueOf(resp), 200);
@@ -88,14 +100,13 @@ public class UsersController {
             }
         }
 
-        public void doPut(HttpExchange exchange) throws IOException {
-            if("PUT".equals(exchange.getRequestMethod())) {
+        public static void doPut(HttpExchange exchange) throws IOException {
+            if ("PUT".equals(exchange.getRequestMethod())) {
 
                 UsersDal userdal = new UsersDal();
 
                 try {
-
-                    userdal.atualizarUsuario(users.name, users.lastName, users.cpf, users.email);
+                    userdal.updateUser(users.id, users.name, users.lastName, users.cpf, users.email);
 
                 } catch (Exception e) {
                     System.out.println("O erro foi: " + e);
@@ -105,14 +116,12 @@ public class UsersController {
             }
         }
 
-        public void doDelete(HttpExchange exchange) throws IOException {
+        public static void doDelete(HttpExchange exchange) throws IOException {
             if ("DELETE".equals(exchange.getRequestMethod())) {
                 UsersDal userdal = new UsersDal();
 
                 try {
-
-                    userdal.deletarUsuario();
-
+                    userdal.deleteUser(users.id);
                 } catch (Exception e) {
                     System.out.println("O erro foi: " + e);
                 }
@@ -121,7 +130,7 @@ public class UsersController {
             }
         }
 
-        public void doOptions(HttpExchange exchange) throws IOException {
+        public static void doOptions(HttpExchange exchange) throws IOException {
             if ("OPTIONS".equals(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1);
                 exchange.close();
@@ -134,6 +143,7 @@ public class UsersController {
         }
     }
 }
+
 
 
 

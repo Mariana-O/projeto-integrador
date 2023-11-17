@@ -7,21 +7,22 @@ import java.util.List;
 
 
 public class Sales {
-    String user = "";
-    String products = "";
-    double value = 0;
-    boolean finishedSale = false;
-    double discount = 0;
-    String sale = "";
+    public int id = 0;
+    public String user = "";
+    public String products = "";
+    public float value = 0;
+    public boolean finishedSale = false;
+    public float discount = 0;
+    public String sale = "";
 
 
     public Sales() {
     }
 
-    public Sales(String user, String products, double valor, boolean finishedSale, double discount, String sale) {
+    public Sales(String user, String products, float valor, boolean finishedSale, float discount, String sale) {
         this.user = user;
         this.products = products;
-        this.value = valor;
+        this.value =  valor;
         this.finishedSale = finishedSale;
         this.discount = discount;
         this.sale = sale;
@@ -47,7 +48,7 @@ public class Sales {
         return value;
     }
 
-    public void setValor(double valor) {
+    public void setValor(float valor) {
         this.value = valor;
     }
 
@@ -61,7 +62,7 @@ public class Sales {
 
     public double getDiscount(){return discount;}
 
-    public void setDiscount(double discount){this.discount = discount;}
+    public void setDiscount(float discount){this.discount = discount;}
 
     public String getSale() {
         return sale;

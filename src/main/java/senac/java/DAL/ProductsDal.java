@@ -1,9 +1,8 @@
 package senac.java.DAL;
 
-
 import java.sql.*;
 
-public class UsersDal {
+public class ProductsDal {
 
     public Connection conectar() {
         Connection conexao = null;
@@ -45,16 +44,16 @@ public class UsersDal {
     }
 
     //INSERIR - CREATE
-    public int insertUser(String name, String lastName, String cpf, String email) throws SQLException {
-        String sql = "INSERT INTO Users (name, lasName, cpf, email) VALUES(?,?,?,?)";
+    public int insertProducts(String name, String description, int price) throws SQLException {
+        String sql = "INSERT INTO Products (name, description, price) VALUES(?,?,?)";
         int linhasAfetadas = 0;
         Connection conexao = conectar();
 
         try (PreparedStatement statement = conexao.prepareStatement(sql)) {
             statement.setString(1, name);
-            statement.setString(2, lastName);
-            statement.setString(3, cpf);
-            statement.setString(4, email);
+            statement.setString(2, description);
+            statement.setInt(3, price);
+
 
             linhasAfetadas = statement.executeUpdate();
 
@@ -70,27 +69,27 @@ public class UsersDal {
         return linhasAfetadas;
     }
     //READ - LISTAR
-    public ResultSet listUser() throws SQLException {
-        String sql = "SELECT * FROM Users";
+    public ResultSet listProducts() throws SQLException {
+        String sql = "SELECT * FROM Products";
         ResultSet result = null;
 
         try (PreparedStatement statement = conectar().prepareStatement(sql)) {
-             result = statement.executeQuery();
+            result = statement.executeQuery();
 
             System.out.println("Listagem de usuários: ");
 
             while (result.next()) {
                 int id = result.getInt("id");
                 String name = result.getString("name");
-                String lastName = result.getString("lastName");
-                String cpf = result.getString("cpf");
-                String email = result.getString("email");
+                String description = result.getString("description");
+                String price = String.valueOf(result.getInt("price"));
+
+
 
                 System.out.println("id" + id);
                 System.out.println("name" + name);
-                System.out.println("lastName" + lastName);
-                System.out.println("cpf" + cpf);
-                System.out.println("email" + email);
+                System.out.println("lastName" + description);
+                System.out.println("cpf" + price);
                 System.out.println("  ");
             }
 
@@ -103,15 +102,15 @@ public class UsersDal {
         }
     }
     // UPDATE - Atualizar
-    public int updateUser(int id, String name, String lastName, String cpf, String email) throws SQLException{
-        String sql = " UPDATE Users SET name = ?, lastName = ?; cpf = ?, email = ? WHERE id = ?";
+    public int updateProducts(int id, String name, String description, int price) throws SQLException{
+        String sql = " UPDATE Products SET name = ?, lastName = ?; cpf = ?, email = ? WHERE id = ?";
         int linhasAfetadas = 0;
 
         try(PreparedStatement statement = conectar().prepareStatement(sql)){
-            statement.setString(1, name);
-            statement.setString(2, lastName);
-            statement.setString(3, cpf);
-            statement.setString(4, email);
+            statement.setInt(1, id);
+            statement.setString(2, name);
+            statement.setString(3, description);
+            statement.setInt(4, price);
 
             linhasAfetadas = statement.executeUpdate();
 
@@ -126,21 +125,23 @@ public class UsersDal {
         return linhasAfetadas;
     }
     // DELETE - DELETAR
-    public int deleteUser(int id) throws SQLException{
-        String sql = "DELETE FROM Users WHERE id = ?";
+    public int deleteProducts(int id) throws SQLException{
+        String sql = "DELETE FROM Products WHERE id = ?";
         int linhasAfetadas = 0;
 
         try(PreparedStatement statement = conectar().prepareStatement(sql)){
 //          statement.setInt(1, id);
 
-           linhasAfetadas = statement.executeUpdate();
+            linhasAfetadas = statement.executeUpdate();
 
-           System.out.println("Foram feitas " + linhasAfetadas + " modificações no banco de dados");
+            System.out.println("Foram feitas " + linhasAfetadas + " modificações no banco de dados");
             return linhasAfetadas;
 
         }catch (SQLException e){
-           System.out.println("O erro na exclusão de dados foi:" + e);
+            System.out.println("O erro na exclusão de dados foi:" + e);
         }
         return linhasAfetadas;
     }
 }
+
+

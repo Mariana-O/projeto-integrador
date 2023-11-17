@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Users {
     ;
-    int id = 0;
+    public int id = 0;
     public String name = "";
     public String lastName = "";
     public String cpf = "";

@@ -4,8 +4,8 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-import senac.java.Controllers.SalesController;
 import senac.java.Controllers.ProductsController;
+import senac.java.Controllers.SalesController;
 import senac.java.Controllers.UsersController;
 
 
@@ -18,7 +18,7 @@ public class Server{
         HttpServer server = HttpServer.create(new InetSocketAddress(4000), 0);
 
         HttpHandler userHandler = new UsersController.UsersHandler();
-        HttpHandler stockHandler = new ProductsController.ProductsHandler();
+        HttpHandler productsHandler = new ProductsController.ProductsHandler();
         HttpHandler salesHandler = new SalesController.SalesHandler();
 
         server.createContext("/api/user", exchange -> {
@@ -28,7 +28,7 @@ public class Server{
 
         server.createContext("/api/products", exchange -> {
             configureCorsHeaders(exchange);
-            stockHandler.handle(exchange);
+            productsHandler.handle(exchange);
         });
 
         server.createContext("/api/sales",exchange -> {
